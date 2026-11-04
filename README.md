@@ -62,6 +62,7 @@ Example installation directory:
 
 ```text
 AptaSUITE/
+├── lib/
 ├── aptasuite-0.9.8.jar
 ├── aptasuite-chart-export.jar
 ├── run-aptasuite.bat

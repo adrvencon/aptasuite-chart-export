@@ -3,6 +3,7 @@ package chartexport.ui;
 import java.io.File;
 import java.util.Locale;
 
+import chartexport.pdf.PdfRenderer;
 import chartexport.png.PngRenderer;
 
 import javafx.scene.chart.Chart;
@@ -10,10 +11,18 @@ import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
-
 final class ChartExporter {
 
     private ChartExporter() {
+    }
+
+    static boolean pdfAvailable() {
+        try {
+            Class.forName("com.itextpdf.text.pdf.PdfWriter");
+            return true;
+        } catch (ClassNotFoundException | LinkageError e) {
+            return false;
+        }
     }
 
     static void savePng(Chart chart) {
@@ -35,6 +44,20 @@ final class ChartExporter {
                         "The image was too large for this chart, so it was saved at " + used
                                 + "x instead of " + options.scale + "x.", owner);
             }
+        } catch (Exception | OutOfMemoryError ex) {
+            failed(ex, owner);
+        }
+    }
+
+    static void savePdf(Chart chart) {
+        Window owner = ownerOf(chart);
+
+        File file = chooseFile(chart, owner, "Save chart as PDF", "PDF document", "pdf");
+        if (file == null) {
+            return;
+        }
+        try {
+            PdfRenderer.write(chart, file);
         } catch (Exception | OutOfMemoryError ex) {
             failed(ex, owner);
         }

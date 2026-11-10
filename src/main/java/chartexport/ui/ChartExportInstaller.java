@@ -1,4 +1,4 @@
-package chartexport;
+package chartexport.ui;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.stage.Window;
 
-final class ChartExportInstaller {
+public final class ChartExportInstaller {
 
     private static final String MARK = "chartexport.hooked";
     private static ContextMenu openMenu;
@@ -19,7 +19,7 @@ final class ChartExportInstaller {
     private ChartExportInstaller() {
     }
 
-    static void install() {
+    public static void install() {
         Window.getWindows().addListener((ListChangeListener<Window>) change -> {
             while (change.next()) {
                 if (change.wasAdded()) {
@@ -53,12 +53,17 @@ final class ChartExportInstaller {
             if (openMenu != null) {
                 openMenu.hide();
             }
-            MenuItem png = new MenuItem("Save chart as PNG...");
-            png.setOnAction(a -> ChartExporter.savePng(chart));
-            openMenu = new ContextMenu(png);
+            openMenu = buildMenu(chart);
             openMenu.show(chart, e.getScreenX(), e.getScreenY());
             e.consume();
         });
+    }
+
+    private static ContextMenu buildMenu(Chart chart) {
+        MenuItem png = new MenuItem("Save chart as PNG...");
+        png.setOnAction(a -> ChartExporter.savePng(chart));
+        ContextMenu menu = new ContextMenu(png);
+        return menu;
     }
 
     private static Chart findChart(Object target) {

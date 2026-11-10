@@ -3,6 +3,7 @@ package chartexport;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import chartexport.ui.ChartExportInstaller;
 import javafx.application.Platform;
 
 
@@ -24,7 +25,6 @@ public class Launcher {
         }
     }
 
-    /** Platform.runLater throws IllegalStateException until the JavaFX toolkit has started. */
     private static void installWhenToolkitReady() {
         for (int i = 0; i < 600; i++) {
             try {

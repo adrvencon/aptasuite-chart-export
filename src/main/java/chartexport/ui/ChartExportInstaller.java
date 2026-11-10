@@ -63,6 +63,12 @@ public final class ChartExportInstaller {
         MenuItem png = new MenuItem("Save chart as PNG...");
         png.setOnAction(a -> ChartExporter.savePng(chart));
         ContextMenu menu = new ContextMenu(png);
+
+        if (ChartExporter.pdfAvailable()) {
+            MenuItem pdf = new MenuItem("Save chart as PDF...");
+            pdf.setOnAction(a -> ChartExporter.savePdf(chart));
+            menu.getItems().add(pdf);
+        }
         return menu;
     }
 
